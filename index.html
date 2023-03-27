@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature Hot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input id="city" type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button id="search-btn" type="button" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img id="img-icon" src="" alt="">
+            <h1 id="displayCity"></h1>
+            <h3><span id="temperature-id"></span>&deg;C</h3>
+            <h1 class="lead" id="description"></h1>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('search-btn').addEventListener('click', function() {
+            const city = document.getElementById('city').value;
+            const url = 'https://api.openweathermap.org/data/2.5/weather?q=' + city +
+                '&appid=6c12cc1b053ac1d0675023b7363c4a34';
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    const cityName = document.getElementById('displayCity');
+                    const imgUrl = "https://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png";
+
+                    document.getElementById('img-icon').src = imgUrl;
+                    const temperature = Math.round(data.main.temp - 273.15);
+                    cityName.innerText = data.name;
+                    const status = data.weather[0].description;
+                    document.getElementById('description').innerText = status;
+                    document.getElementById('temperature-id').innerText = temperature;
+                    document.getElementById('city').value = '';
+
+                });
+        })
+
+
+
+
+        // fetch('https://api.openweathermap.org/data/2.5/forecast?q=Dhaka&appid=6c12cc1b053ac1d0675023b7363c4a34 ')
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         console.log(data.list[0].weather[0].description)
+        //     });
+    </script>
+
+</body>
+
+</html>
